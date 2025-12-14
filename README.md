@@ -1,5 +1,10 @@
 # agente-instacrops
 
+## Objetivo
+Chatbot para conversar con agentes, que permita a un usuario (agricultor/agrónomo) consultar el estado de sus cultivos y recibir alertas inteligentes cruzando datos de:
+1.  **Clima en tiempo real** (API Externa).
+2.  **Sensores de campo** (Base de datos local SQLite).
+
 ### Arquitectura del proyecto
 - main.py: Código del agente
 - langgraph.json: Configuración de LangGraph

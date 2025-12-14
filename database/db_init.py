@@ -12,10 +12,10 @@ def init_db():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS sensores (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            tipo TEXT NOT NULL,
-            valor REAL NOT NULL,
-            fecha DATE NOT NULL,
-            ubicacion TEXT NOT NULL
+            type TEXT NOT NULL,
+            value REAL NOT NULL,
+            date DATE NOT NULL,
+            ubication TEXT NOT NULL
         )
     ''')
 
@@ -46,19 +46,19 @@ def seed_data(cursor):
         for loc in locations:
             # Humedad suelo
             cursor.execute('''
-                INSERT INTO sensores (tipo, valor, fecha, ubicacion)
+                INSERT INTO sensores (type, value, date, ubication)
                 VALUES (?, ?, ?, ?)
             ''', ("humedad_suelo", random.uniform(10.0, 30.0), date, loc)) # Low humidity
             
             # Temperatura suelo
             cursor.execute('''
-                INSERT INTO sensores (tipo, valor, fecha, ubicacion)
+                INSERT INTO sensores (type, value, date, ubication)
                 VALUES (?, ?, ?, ?)
             ''', ("temperatura_suelo", random.uniform(15.0, 25.0), date, loc))
 
             # pH
             cursor.execute('''
-                INSERT INTO sensores (tipo, valor, fecha, ubicacion)
+                INSERT INTO sensores (type, value, date, ubication)
                 VALUES (?, ?, ?, ?)
             ''', ("ph_suelo", random.uniform(6.0, 7.5), date, loc))
 
