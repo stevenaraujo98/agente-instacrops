@@ -8,8 +8,8 @@ async def get_weather(city: str) -> str:
     return f"It's always sunny in {city}!"
 
 model_g = ChatGoogleGenerativeAI(
-    model="gemini-2.5-flash", #"gemini-3-pro-preview",
-    temperature=1.0,  # Gemini 3.0+ defaults to 1.0
+    model="gemini-2.5-flash",
+    temperature=1.0, 
     max_tokens=None,
     timeout=None,
     max_retries=2,
