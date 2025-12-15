@@ -45,6 +45,7 @@ uv add "langgraph-cli[inmem]" --dev
 uv add ipykernel --dev
 conda install -n langgraph ipykernel --update-deps --force-reinstall
 uv add grandalf --dev
+uv add pytest --dev
 
 ```
 ```

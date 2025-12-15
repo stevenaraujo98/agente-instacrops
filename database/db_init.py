@@ -51,19 +51,19 @@ def seed_data(cursor):
                 cursor.execute('''
                     INSERT INTO sensores (type, value, date, ubication, city)
                     VALUES (?, ?, ?, ?, ?)
-                ''', ("humedad_suelo", random.uniform(10.0, 30.0), date, loc, city)) # Low humidity
+                ''', ("humedad_suelo", random.uniform(10.0, 30.0), date.isoformat(), loc, city)) # Low humidity
                 
                 # Temperatura suelo
                 cursor.execute('''
                     INSERT INTO sensores (type, value, date, ubication, city)
                     VALUES (?, ?, ?, ?, ?)
-                ''', ("temperatura_suelo", random.uniform(15.0, 25.0), date, loc, city))
+                ''', ("temperatura_suelo", random.uniform(15.0, 25.0), date.isoformat(), loc, city))
 
                 # pH
                 cursor.execute('''
                     INSERT INTO sensores (type, value, date, ubication, city)
                     VALUES (?, ?, ?, ?, ?)
-                ''', ("ph_suelo", random.uniform(6.0, 7.5), date, loc, city))
+                ''', ("ph_suelo", random.uniform(6.0, 7.5), date.isoformat(), loc, city))
 
 if __name__ == "__main__":
     init_db()

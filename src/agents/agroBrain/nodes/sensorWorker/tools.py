@@ -26,7 +26,7 @@ def query_sensor_data(sensor_type: str, city: str = "Guayaquil", days_back: int 
     # --- LÓGICA DE FECHAS FIJAS ---
     end_date = datetime.date(2025, 12, 14)
     limit_date = datetime.date(2025, 12, 7)
-    requested_start_date = end_date - datetime.timedelta(days=days_back)
+    requested_start_date = end_date - datetime.timedelta(days=days_back-1)
 
     query = '''
         SELECT type, value, date, ubication
@@ -37,7 +37,7 @@ def query_sensor_data(sensor_type: str, city: str = "Guayaquil", days_back: int 
     print("Executing query with params:", sensor_type, requested_start_date, end_date, city)
     
     try:
-        cursor.execute(query, (sensor_type, requested_start_date, end_date, city))
+        cursor.execute(query, (sensor_type, requested_start_date.isoformat(), end_date.isoformat(), city))
         rows = cursor.fetchall()
         
         if not rows:
@@ -50,7 +50,6 @@ def query_sensor_data(sensor_type: str, city: str = "Guayaquil", days_back: int 
             r_dict['date'] = str(r_dict['date'])
             results.append(r_dict)
             
-        # Return mejorado en Inglés
         return f"Retrieved {len(results)} records for '{sensor_type}' over the past {days_back} days: {json.dumps(results)}"
 
     except Exception as e:

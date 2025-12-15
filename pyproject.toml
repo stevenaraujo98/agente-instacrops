@@ -16,6 +16,13 @@ dev = [
     "grandalf>=0.8",
     "ipykernel>=7.1.0",
     "langgraph-cli[inmem]>=0.4.9",
+    "pytest>=9.0.2",
+]
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::DeprecationWarning:.*sqlite3.*",
+    "ignore::DeprecationWarning:.*langchain.*",
 ]
 [tool.setuptools.packages.find]
 where = ["src"]
