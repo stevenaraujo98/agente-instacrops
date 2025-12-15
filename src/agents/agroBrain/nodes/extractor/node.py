@@ -10,6 +10,8 @@ class ContactInfo(BaseModel):
     city: str = Field(description="The city where the person is located")
     date: str = Field(description="The date of the appointment")
     hour: str = Field(description="The hour of the appointment")
+    type_sensor: str = Field(description="The type of sensor")
+    
     
 
 llm_with_structured_output = init_chat_model("openai:gpt-5-nano", temperature=0)
@@ -27,4 +29,6 @@ def extractor(state: State):
         new_state["target_city"] = schema.city
         new_state["target_date"] = schema.date
         new_state["target_hour"] = schema.hour
+        new_state["type_sensor"] = schema.type_sensor
+        new_state["days_back"] = schema.days_back
     return new_state

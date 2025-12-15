@@ -15,7 +15,8 @@ def init_db():
             type TEXT NOT NULL,
             value REAL NOT NULL,
             date DATE NOT NULL,
-            ubication TEXT NOT NULL
+            ubication TEXT NOT NULL,
+            city TEXT NOT NULL
         )
     ''')
 
@@ -36,31 +37,33 @@ def init_db():
 def seed_data(cursor):
     """Seeds the database with sample sensor data."""
     locations = ["Sector A", "Sector B", "Invernadero 1"]
+    cities = ["Guayaquil", "Santiago de Chile", "Lima"]
     sensor_types = ["humedad_suelo", "temperatura_suelo", "ph_suelo"]
     
     today = datetime.date.today()
     
     # Generate data for the last 7 days
-    for i in range(7):
-        date = today - datetime.timedelta(days=i)
-        for loc in locations:
-            # Humedad suelo
-            cursor.execute('''
-                INSERT INTO sensores (type, value, date, ubication)
-                VALUES (?, ?, ?, ?)
-            ''', ("humedad_suelo", random.uniform(10.0, 30.0), date, loc)) # Low humidity
-            
-            # Temperatura suelo
-            cursor.execute('''
-                INSERT INTO sensores (type, value, date, ubication)
-                VALUES (?, ?, ?, ?)
-            ''', ("temperatura_suelo", random.uniform(15.0, 25.0), date, loc))
+    for city in cities:
+        for i in range(7):
+            date = today - datetime.timedelta(days=i)
+            for loc in locations:
+                # Humedad suelo
+                cursor.execute('''
+                    INSERT INTO sensores (type, value, date, ubication, city)
+                    VALUES (?, ?, ?, ?, ?)
+                ''', ("humedad_suelo", random.uniform(10.0, 30.0), date, loc, city)) # Low humidity
+                
+                # Temperatura suelo
+                cursor.execute('''
+                    INSERT INTO sensores (type, value, date, ubication, city)
+                    VALUES (?, ?, ?, ?, ?)
+                ''', ("temperatura_suelo", random.uniform(15.0, 25.0), date, loc, city))
 
-            # pH
-            cursor.execute('''
-                INSERT INTO sensores (type, value, date, ubication)
-                VALUES (?, ?, ?, ?)
-            ''', ("ph_suelo", random.uniform(6.0, 7.5), date, loc))
+                # pH
+                cursor.execute('''
+                    INSERT INTO sensores (type, value, date, ubication, city)
+                    VALUES (?, ?, ?, ?, ?)
+                ''', ("ph_suelo", random.uniform(6.0, 7.5), date, loc, city))
 
 if __name__ == "__main__":
     init_db()

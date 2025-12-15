@@ -5,3 +5,4 @@ class State(MessagesState):
     target_city: str
     target_date: str
     target_hour: str
+    type_sensor: str
