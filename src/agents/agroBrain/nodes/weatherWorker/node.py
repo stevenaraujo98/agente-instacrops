@@ -5,8 +5,7 @@ from agents.agroBrain.nodes.weatherWorker.prompt import prompt_template
 from langchain_openai import ChatOpenAI
 
 model = ChatOpenAI(
-    model_name="gpt-5-mini",
-    # model_name="gpt-4o-mini",
+    model_name="gpt-4o-mini",
     # temperature=None,
     # max_tokens=None,
 )

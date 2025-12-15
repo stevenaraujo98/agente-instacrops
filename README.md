@@ -31,6 +31,11 @@ Este proyecto implementa un **Chatbot Orquestador** diseñado para asistir a agr
     * *Herramienta:* `query_sensor_data(tipo_sensor, ciudad, rango_fecha)`.
 4.  **Memoria:** Mantiene el estado y contexto de la conversación entre turnos.
 
+## Modelos que se utilizan:
+1. gpt-5-nano: en el agente extractor de información estructurada .
+2. gpt-4o-mini: en el agente sensor worker y weather worker.
+3. gpt-5-mini: en el agente ruteador.
+
 ## Instalación y Configuración
 Pasos para levantar el entorno de desarrollo usando Conda y UV.
 

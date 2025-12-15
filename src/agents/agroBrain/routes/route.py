@@ -11,7 +11,7 @@ class RouteIntent(BaseModel):
         'sensor_worker', description="The next step in the routing process"
     ) # by default returns conversation with the Field
 
-llm = init_chat_model("openai:gpt-5-nano", temperature=0)
+llm = init_chat_model("openai:gpt-5-mini", temperature=0)
 llm = llm.with_structured_output(schema=RouteIntent)
 
 # Define the intent routing function
