@@ -19,7 +19,10 @@ def get_weather_from_city(city: str, date: str = datetime.date.today().strftime(
         return "Error: WEATHER_API_KEY not found in environment variables."
 
     try:
-        response = requests.get(f"https://geocoding-api.open-meteo.com/v1/search?name={city}&count=1")
+        list_city = city.split(",")
+        if len(list_city) > 1:
+            city = list_city[0].strip()
+        response = requests.get(f"https://geocoding-api.open-meteo.com/v1/search?name={city}&count=1&language=es")
         data = response.json()
         latitude = data["results"][0]["latitude"]
         longitude = data["results"][0]["longitude"]

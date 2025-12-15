@@ -1,6 +1,6 @@
 from langgraph.graph import StateGraph, START, END
 from langchain.chat_models import init_chat_model
-from typing import TypedDict
+from typing_extensions import TypedDict
 
 from agents.agroBrain.state import State
 from agents.agroBrain.nodes.extractor.node import extractor
