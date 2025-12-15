@@ -1,6 +1,3 @@
-"""
-Test simple para la herramienta del clima
-"""
 import os
 import sys
 from unittest.mock import patch, MagicMock

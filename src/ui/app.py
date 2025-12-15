@@ -11,33 +11,33 @@ st.title("Agente AgroBrain 🌿")
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Mostrar historial
+# Show history
 for msg in st.session_state.messages:
     with st.chat_message(msg.type):
         st.write(msg.content)
 
-# Input de usuario
+# User input
 if prompt := st.chat_input("Consulta sobre cultivos..."):
-    # Guardar y mostrar user message
+    # Save and display user message with corresponding role
     st.session_state.messages.append({"type": "human", "content": prompt})
-    with st.chat_message("human"):
-        st.write(prompt)
+    with st.chat_message("human"): # Sets the message as the user's
+        st.write(prompt) # Displays the message in the interface
 
-    # Invocar a tu agente (LangGraph)
+    # Invoke the agent (LangGraph)
     with st.chat_message("ai"):
-        # Usamos stream para ver la respuesta en tiempo real
+        # Use stream to see the response in real-time
         response_placeholder = st.empty()
         full_response = ""
         
-        # 'stream' devuelve eventos paso a paso
+        # 'stream' returns events step by step
         inputs = {"messages": st.session_state.messages}
         for chunk in agent.stream(inputs, stream_mode="values"):
-            # Filtramos para obtener solo el último mensaje del AI
+            # Filter to get only the last AI message
             if "messages" in chunk:
                 last_msg = chunk["messages"][-1]
                 if last_msg.type == "ai":
                     full_response = last_msg.content
                     response_placeholder.write(full_response)
         
-        # Guardar respuesta en historial
+        # Save response in history with corresponding role
         st.session_state.messages.append({"type": "ai", "content": full_response})

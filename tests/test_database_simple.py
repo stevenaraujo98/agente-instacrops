@@ -1,6 +1,3 @@
-"""
-Test sencillo para verificar la base de datos
-"""
 import os
 import sys
 import tempfile
@@ -120,7 +117,7 @@ def test_sensor_query_tool():
 
 
 def test_range_sensor_query_tool():
-    """Test básico: verificar que la herramienta de consulta funciona"""
+    """Test básico: verificar que la herramienta de consulta funciona y la cantidad de datos coincide con la solicitud"""
     from src.agents.agroBrain.nodes.sensorWorker.tools import query_sensor_data
     
     # Usar BD temporal

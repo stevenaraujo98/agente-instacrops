@@ -1,6 +1,3 @@
-"""
-Test simple para el nodo sensorWorker
-"""
 import os
 import sys
 import tempfile

@@ -7,13 +7,16 @@ from agents.agroBrain.nodes.sensorWorker.node import sensor_worker
 from agents.agroBrain.routes.route import intent_route
 
 
-
+"""
+Definition of the agroBrain agent using LangGraph
+"""
 builder = StateGraph(State)
 builder.add_node("extractor", extractor)
 builder.add_node("weather_worker", weather_worker)
 builder.add_node("sensor_worker", sensor_worker)
 
 builder.add_edge(START, "extractor")
+# Rutas condicionales basadas en la intención detectada
 builder.add_conditional_edges('extractor', intent_route)
 builder.add_edge("weather_worker", END)
 builder.add_edge("sensor_worker", END)

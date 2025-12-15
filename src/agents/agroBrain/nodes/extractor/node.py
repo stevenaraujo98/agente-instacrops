@@ -18,7 +18,7 @@ llm_with_structured_output = init_chat_model("openai:gpt-5-nano", temperature=0)
 llm_with_structured_output = llm_with_structured_output.with_structured_output(schema=ContactInfo)
 
 def extractor(state: State):
-    history = state["messages"] # historial de mensajes
+    history = state["messages"] # messages history
     customer_name = state.get("customer_name", None)
     city = state.get("city", None)
     new_state: State = {}

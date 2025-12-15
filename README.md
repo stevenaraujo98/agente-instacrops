@@ -1,132 +1,132 @@
-# agente-instacrops
+# 🌾 Agente Instacrops: Asistente Agrícola Inteligente
 
-## Objetivo
-Chatbot para conversar con agentes, que permita a un usuario (agricultor/agrónomo) consultar el estado de sus cultivos y recibir alertas inteligentes cruzando datos de:
+## 📋 Objetivo
+Este proyecto implementa un **Chatbot Orquestador** diseñado para asistir a agricultores y agrónomos. El sistema cruza datos en tiempo real para ofrecer alertas inteligentes sobre el estado de los cultivos, integrando:
 1.  **Clima en tiempo real** (API Externa).
 2.  **Sensores de campo** (Base de datos local SQLite).
 
-## Arquitectura del proyecto
-- `langgraph.json`: Configuración de LangGraph
-- `.env`: Variables de entorno (API Keys)
-- `README.md`: Documentación del proyecto
-- `notebooks`: Notebooks de prueba
-- `/src`: Lógica del agente.
-- `/tests`: Pruebas unitarias
+---
 
-## Arquitectura (LangGraph)
+## 🏗️ Arquitectura del Proyecto
+
+### Estructura de Directorios
+```bash
+/agente-instacrops
+├── langgraph.json       # Configuración del grafo
+├── .env                 # Variables de entorno (API Keys)
+├── setup_database.py    # Script de gestión de DB
+├── database/            # Scripts SQL y de inicialización
+├── notebooks/           # Pruebas exploratorias
+├── src/                 # Código fuente principal
+│   ├── agents/          # Lógica de Agentes y Sub-agentes
+│   └── ui/              # Interfaz de usuario (Streamlit)
+└── tests/               # Pruebas unitarias
+```
+
+## Flujo de LangGraph (Lógica)
 1.  **Nodo Orquestador:** Recibe el input, consulta el historial y decide a qué sub-agente llamar.
 2.  **Sub-agente 1 (Clima):** Usa `weatherapi`. Herramienta: `get_current_weather(lat, lon)`.
 3.  **Sub-agente 2 (Sensores):** Consulta una base de datos SQLite local.
     * *Tabla:* `sensores` (id, tipo, valor, fecha, ubicacion).
-    * *Herramienta:* `query_sensor_data(tipo_sensor, rango_fecha)`.
-4.  **Memoria:** Implementar `MemorySaver` o `SqliteSaver` para mantener el hilo de la conversación (Checkpointer).
+    * *Herramienta:* `query_sensor_data(tipo_sensor, ciudad, rango_fecha)`.
+4.  **Memoria:** Mantiene el estado y contexto de la conversación entre turnos.
 
-## Como instalarlo
-### Conda y UV - Instalación de dependencias
-```
+## Instalación y Configuración
+Pasos para levantar el entorno de desarrollo usando Conda y UV.
+
+1. Preparar el Entorno (Conda)
+```bash
 conda create -n agentInstaChallenge python=3.11 openssl cryptography grpcio -y
 conda activate agentInstaChallenge
 
+# Instalar dependencias base del sistema
 conda install -c conda-forge protobuf rust pip
+```
 
+2. Gestión de Dependencias (UV)
+```bash
+# Inicializar UV e instalar dependencias del proyecto
 pip install uv
+uv init
+uv --version
 
-# BASE 
-uv --version 
-
-## init 
-uv init 
-
-# add dependencies 
+# Dependencias principales
 uv add langgraph langchain langchain-openai langchain[google-genai] langchain-deepseek
 uv add streamlit
 
-# add dev dependencies
+# Dependencias de desarrollo
 uv add "langgraph-cli[inmem]" --dev
-uv add ipykernel --dev
+uv add ipykernel grandalf pytest --dev
+
+# Reinstalar ipykernel para compatibilidad con Conda
 conda install -n langgraph ipykernel --update-deps --force-reinstall
-uv add grandalf --dev
-uv add pytest --dev
 
-```
-```
-# run the agent 
-uv run langgraph dev 
-```
-
-```
-[tool.setuptools.packages.find]
-where = ["src"]
-include = ["*"]
-
-# recompile the project
+# Instalar el proyecto en modo editable
 uv pip install -e .
 ```
 
-run gui
-```
-uv run streamlit run src/ui/app.py
-```
+## Base de Datos (Sensores)
+El proyecto utiliza SQLite para simular datos de sensores históricos.  
 
-
-## Api clima
-- WEATHER_API
-Endpoint:
-- http://api.weatherapi.com/v1/history.json?key={{weather_api}}&q=Guayaquil&aqi=n&dt=2025-11-30&days=2&hour=15
-- http://api.weatherapi.com/v1/current.json?key={{weather_api}}&q=Guayaquil&aqi=n
-- http://api.weatherapi.com/v1/forecast.json?key={{weather_api}}&q=Guayaquil&aqi=n&days=5
-
-## Base de datos sensores
-- SQLite local
-- Tabla: sensores
-    - id (INTEGER PRIMARY KEY AUTOINCREMENT)
-    - type (TEXT) -- e.g., 'humedad_suelo', 'temperatura_suelo', 'ph_suelo'
-    - value (REAL)
-    - date (TEXT) -- ISO format date string
-    - ubication (TEXT) -- e.g., 'Sector A', 'Sector B', 'Invernadero 1'
-    - city (TEXT) -- e.g., 'Guayaquil', 'Santiago de Chile', 'Lima'
-
-### Codigo o script para CRUD de la base de datos
-Creacion de la base de datos y tabla sensores, inserción de datos de ejemplo:
-Para crear la base ejecutamos el script: database/db_init.py
+Inicialización  
+Ejecuta el script para crear la tabla y poblarla con datos de prueba (database/db_init.py):
 ```
 python -m database.db_init 
 ```
 
-Para revisar el contenido de la base de datos ejecutamos:
+
+Verificación  
+Para validar que los datos se cargaron correctamente:
 ```
 python setup_database.py show
 python setup_database.py check
 ```
 
-### Estructura de la tabla sensores
+
+## Ejecución
+1. Interfaz de Usuario (Recomendado)
+Para iniciar el Chatbot en el navegador:
+```bash
+uv run streamlit run src/ui/app.py
+```
+
+2. Servidor de Desarrollo LangGraph
+Para depurar el flujo del agente:
+```bash
+uv run langgraph dev
+```
+
+3. recompile the project
+```bash
+uv pip install -e .
+```
+
+## Referencia Técnica
+### Api clima
+Endpoints configurados para la consulta de datos:
+- Histórico: /history.json (dt, location)
+- Actual: /current.json (location, aqi)
+- Pronóstico: /forecast.json (days, location)
+
+### Modelo de Datos (SQLite)
 ```sql
 CREATE TABLE sensores (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    type TEXT,
-    value REAL,
-    date TEXT,
-    ubication TEXT,
-    city TEXT
+    type TEXT,      -- Ej: 'humedad_suelo', 'ph_suelo'
+    value REAL,     -- Valor numérico
+    date TEXT,      -- Formato ISO
+    ubication TEXT, -- Ej: 'Sector A'
+    city TEXT       -- Ej: 'Guayaquil'
 );
 ```
 
-#### Ejemplo de datos en la tabla sensores
-```sql
-INSERT INTO sensores (type, value, date, ubication, city) VALUES
-('humedad_suelo', 23.5, '2025-12-10T10:00:00', 'Sector A', 'Guayaquil'),
-('temperatura_suelo', 18.2, '2025-12-10T10:00:00', 'Sector A', 'Guayaquil'),
-('ph_suelo', 6.5, '2025-12-10T10:00:00', 'Sector A', 'Guayaquil'),
-('humedad_suelo', 25.0, '2025-12-11T10:00:00', 'Sector A', 'Guayaquil'),
-('temperatura_suelo', 19.0, '2025-12-11T10:00:00', 'Sector A', 'Guayaquil'),
-('ph_suelo', 6.7, '2025-12-11T10:00:00', 'Sector A', 'Guayaquil');
-```
-
-#### Ejemplo de consulta SQL para obtener datos de sensores
+### Ejemplo de Consulta SQL (Tool):
 ```sql
 SELECT type, value, date, ubication
 FROM sensores
-WHERE type = 'humedad_suelo' AND date BETWEEN '2025-12-07' AND '2025-12-14' AND city = 'Guayaquil'
+WHERE type = 'humedad_suelo'
+  AND date BETWEEN '2025-12-07' AND '2025-12-14'
+  AND city = 'Guayaquil'
 ORDER BY date ASC;
 ```
 

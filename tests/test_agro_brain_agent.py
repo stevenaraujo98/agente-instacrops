@@ -1,6 +1,3 @@
-"""
-Test simple para el agente agroBrain completo
-"""
 import os
 import sys
 import tempfile
