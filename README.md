@@ -39,6 +39,7 @@ uv init
 
 # add dependencies 
 uv add langgraph langchain langchain-openai langchain[google-genai] langchain-deepseek
+uv add streamlit
 
 # add dev dependencies
 uv add "langgraph-cli[inmem]" --dev
@@ -61,6 +62,12 @@ include = ["*"]
 # recompile the project
 uv pip install -e .
 ```
+
+run gui
+```
+uv run streamlit run src/ui/app.py
+```
+
 
 ## Api clima
 - WEATHER_API
