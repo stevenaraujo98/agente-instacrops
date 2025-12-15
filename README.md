@@ -67,3 +67,59 @@ Endpoint:
 - http://api.weatherapi.com/v1/history.json?key={{weather_api}}&q=Guayaquil&aqi=n&dt=2025-11-30&days=2&hour=15
 - http://api.weatherapi.com/v1/current.json?key={{weather_api}}&q=Guayaquil&aqi=n
 - http://api.weatherapi.com/v1/forecast.json?key={{weather_api}}&q=Guayaquil&aqi=n&days=5
+
+## Base de datos sensores
+- SQLite local
+- Tabla: sensores
+    - id (INTEGER PRIMARY KEY AUTOINCREMENT)
+    - type (TEXT) -- e.g., 'humedad_suelo', 'temperatura_suelo', 'ph_suelo'
+    - value (REAL)
+    - date (TEXT) -- ISO format date string
+    - ubication (TEXT) -- e.g., 'Sector A', 'Sector B', 'Invernadero 1'
+    - city (TEXT) -- e.g., 'Guayaquil', 'Santiago de Chile', 'Lima'
+
+### Codigo o script para CRUD de la base de datos
+Creacion de la base de datos y tabla sensores, inserción de datos de ejemplo:
+Para crear la base ejecutamos el script: database/db_init.py
+```
+python -m database.db_init 
+```
+
+Para revisar el contenido de la base de datos ejecutamos:
+```
+python setup_database.py show
+python setup_database.py check
+```
+
+### Estructura de la tabla sensores
+```sql
+CREATE TABLE sensores (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    type TEXT,
+    value REAL,
+    date TEXT,
+    ubication TEXT,
+    city TEXT
+);
+```
+
+#### Ejemplo de datos en la tabla sensores
+```sql
+INSERT INTO sensores (type, value, date, ubication, city) VALUES
+('humedad_suelo', 23.5, '2025-12-10T10:00:00', 'Sector A', 'Guayaquil'),
+('temperatura_suelo', 18.2, '2025-12-10T10:00:00', 'Sector A', 'Guayaquil'),
+('ph_suelo', 6.5, '2025-12-10T10:00:00', 'Sector A', 'Guayaquil'),
+('humedad_suelo', 25.0, '2025-12-11T10:00:00', 'Sector A', 'Guayaquil'),
+('temperatura_suelo', 19.0, '2025-12-11T10:00:00', 'Sector A', 'Guayaquil'),
+('ph_suelo', 6.7, '2025-12-11T10:00:00', 'Sector A', 'Guayaquil');
+```
+
+#### Ejemplo de consulta SQL para obtener datos de sensores
+```sql
+SELECT type, value, date, ubication
+FROM sensores
+WHERE type = 'humedad_suelo' AND date BETWEEN '2025-12-07' AND '2025-12-14' AND city = 'Guayaquil'
+ORDER BY date ASC;
+```
+
+

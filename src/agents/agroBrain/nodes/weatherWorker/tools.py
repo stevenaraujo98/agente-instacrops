@@ -36,7 +36,7 @@ def get_weather_from_city(city: str, date: str = datetime.date.today().strftime(
         response = requests.get(base_url, params=params)
         response.raise_for_status()
         data = response.json()
-        # print("Weather Data:", data)
+        print("Weather Data:", data)
         
         result = data.get("forecast", {}).get("forecastday", [])[0].get("hour", [])[0]
         # response = f"The weather in {city} is {data['current_weather']['temperature']}C with {data['current_weather']['windspeed']}km/h of wind."

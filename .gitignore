@@ -10,3 +10,8 @@ wheels/
 .venv
 .langgraph_api
 *.env
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3

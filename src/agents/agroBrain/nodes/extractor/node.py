@@ -30,5 +30,4 @@ def extractor(state: State):
         new_state["target_date"] = schema.date
         new_state["target_hour"] = schema.hour
         new_state["type_sensor"] = schema.type_sensor
-        new_state["days_back"] = schema.days_back
     return new_state

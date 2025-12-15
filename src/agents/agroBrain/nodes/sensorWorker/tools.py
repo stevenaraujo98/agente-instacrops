@@ -4,15 +4,17 @@ from langchain_core.tools import tool
 from database.connection import get_db_connection
 
 @tool("query_sensor_data", description="Query sensor data from the local database")
-def query_sensor_data(sensor_type: str, days_back: int = 7):
+def query_sensor_data(sensor_type: str, city: str = "Guayaquil", days_back: int = 7) -> str:
     """
     Queries sensor data from the local database.
     Args:
         sensor_type: The type of sensor (e.g., 'humedad_suelo', 'temperatura_suelo', 'ph_suelo').
+        city: The city/location to query data for. Defaults to "Guayaquil".
         days_back: Number of days back to query data for. Max 7 days.
     Returns:
         String with JSON data or error message.
     """
+    print("Querying sensor data:", sensor_type, city, days_back)
     conn = get_db_connection()
     # Asegura que las filas se puedan convertir a dict si usas sqlite
     if hasattr(conn, 'row_factory'):
@@ -29,12 +31,13 @@ def query_sensor_data(sensor_type: str, days_back: int = 7):
     query = '''
         SELECT type, value, date, ubication
         FROM sensores
-        WHERE type = ? AND date BETWEEN ? AND ?
+        WHERE type = ? AND date BETWEEN ? AND ? AND city = ?
         ORDER BY date ASC
     '''
+    print("Executing query with params:", sensor_type, requested_start_date, end_date, city)
     
     try:
-        cursor.execute(query, (sensor_type, requested_start_date, end_date))
+        cursor.execute(query, (sensor_type, requested_start_date, end_date, city))
         rows = cursor.fetchall()
         
         if not rows:
